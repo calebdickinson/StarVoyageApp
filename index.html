@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>StarVoyage</title>
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    </head>
+    <body>
+        <style>
+            html,
+            body {
+                margin: 0px;
+                padding: 0px;
+                overflow: hidden;
+                height: 100%;
+            }
+        </style>
+        <script>
+            function generateAlienType() {
+                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const suffixes = [
+                    "A", "AE", "AGOGS", "AKS", "ALIENS", "ANTS", "ARIES", "ARIUMS", "ATES",
+                    "BACTERS", "BACTRACHII", "BAKELIKES", "BEINGS", "BIOSES", "BLASTS", "BLOIDS", "BLEPHERONS",
+                    "CEPHALOIDS", "CETIS", "CHOERII", "CHORES", "CHROIA", "CNEMII", "COLINES", "CYTES", "CHAETAE",
+                    "DACTYLITES", "DENDRONS", "DYNICS",
+                    "E", "EAE", "EALS", "EANS", "ECTROPIANS", "EERS", "ENS", "ENSE", "ENSIS", "EREMICS", "ERESICS", "ERGAKS", "ETUMS",
+                    "FUGII", "FORMS",
+                    "GAMS", "GENES", "GNATHS", "GOGS", "GOGUES",
+                    "HEDRONS", "HOODS", "HOOPS", "HUMERALS",
+                    "I", "IANS", "IBLES", "ICS", "IDES", "IE", "IENS", "IES", "IFORMS", "II", "ILES", "INAE", "INSECTS", "IONS", "ITES", "ITICS", "ITIES", "ISMS", "IVORES",
+                    "JAKS", "JABBERS", "JABBERWOCKS",
+                    "KABBIJABBERS", "KRIEKCFORMS",
+                    "LIENS", "LIKES", "LIMPUMLEAPERS", "LISTLLAMPERS", "LITHS",
+                    "MANIACS", "MAGOGS", "MULTIJABBERS",
+                    "NEMAS", "NINJAS",
+                    "O", "ODES", "ODONS", "OE", "OIDS", "ONTS", "OO", "OODS", "OPS", "ORIES", "ORS", "OSTRACI",
+                    "PATHS", "PHAGES", "PHASICS", "PHARESICS", "PHYCEAE", "PHYLAXICS", "PHYLL", "PICRINS", "PLASICS", "PLASMS", "PLASTS", "PLOIDS", "PODS", "PREXIES", "PTERICS", "PTILES",
+                    "QUOGLIES", "QUATHMS",
+                    "RENS", "RRHIZACS",
+                    "S", "SARCS", "SAURS", "SCOPES", "SOMES", "SPIDERS", "SPYDERS", "STOMATES", "STYLITES",
+                    "TALITES", "TAPHS", "THECAE", "THROIDS", "TILES", "TOKIES", "TOPICS", "TROPES", "TYPES",
+                    "U", "UE", "UMS", "UR", "URAS",
+                    "VALENTS", "VORES",
+                    "XOMES", "XORMS",
+                    "WARDS", "WOBBLES", "WOOBLES", "WOOMPERS", "WOOPS", "WOOSMS",
+                    "YITLITHS", "YABBERJABBERS",
+                    "ZOA", "ZOANS", "ZYMES"
+                ];
+                const randomLength = Math.floor(Math.random() * 8) + 3;
+                let result = "";
+                for (let i = 0; i < randomLength; i++) { result += alphabet[Math.floor(Math.random() * 26)]; }
+                result += suffixes[Math.floor(Math.random() * suffixes.length)];
+                return result;
+            }
+            const alienType = generateAlienType();
+            function generateSelfAlienType() {
+                const uppercaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const lowercaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+                const suffixes = [
+                    "a", "ae", "agog", "ak", "alien", "ant", "arie", "arium", "ate",
+                    "bacter", "bactrachii", "bakelike", "being", "biose", "blast", "bloid", "blepheron",
+                    "cephaloid", "ceti", "choerii", "chore", "chroia", "cnemii", "coline", "cyte", "chaetae",
+                    "dactylite", "dendron", "dynic",
+                    "e", "eae", "eal", "ean", "ectropian", "eer", "en", "ense", "ensi", "eremic", "eresic", "ergak", "etum",
+                    "fugii", "form",
+                    "gam", "gene", "gnath", "gog", "gogue",
+                    "hedron", "hood", "hoop", "humeral",
+                    "i", "ian", "ible", "ic", "ide", "ie", "ien", "ie", "iform", "ii", "ile", "inae", "insect", "ion", "ite", "itic", "itie", "ism", "ivore",
+                    "jak", "jabber", "jabberwock",
+                    "kabbijabber", "kriekcform",
+                    "lien", "like", "limpumleaper", "listllamper", "lith",
+                    "maniac", "magog", "multijabber",
+                    "nema", "ninja",
+                    "o", "ode", "odon", "oe", "oid", "ont", "oo", "ood", "op", "orie", "or", "ostraci",
+                    "path", "phage", "phasic", "pharesic", "phyceae", "phylaxic", "phyll", "picrin", "plasic", "plasm", "plast", "ploid", "pod", "prexie", "pteric", "ptile",
+                    "quoglie", "quathm",
+                    "ren", "rrhizac",
+                    "sarc", "saur", "scope", "some", "spider", "spyder", "stomate", "stylite",
+                    "talite", "taph", "thecae", "throid", "tile", "tokie", "topic", "trope", "type",
+                    "u", "ue", "um", "ur", "ura",
+                    "valent", "vore",
+                    "xome", "xorm",
+                    "ward", "wobble", "wooble", "woomper", "woop", "woosm",
+                    "yitlith", "yabberjabber",
+                    "zoa", "zoan", "zyme"
+                ];
+                const randomLength = Math.floor(Math.random() * 8) + 3;
+                let result = "";
+                for (let i = 0; i < randomLength; i++) {
+                    if (i === 0) { result += uppercaseAlphabet[Math.floor(Math.random() * 26)]; }
+                    else { result += lowercaseAlphabet[Math.floor(Math.random() * 26)]; }
+                }
+                result += suffixes[Math.floor(Math.random() * suffixes.length)];
+                return result;
+            }
+            const selfAlienType = generateSelfAlienType();
+            function determineArticle(selfAlienType) {
+                const vowels = 'AEIOU';
+                if (vowels.includes(selfAlienType[0])) {
+                    return 'an';
+                } else {
+                    return 'a';
+                }
+            }
+            const article = determineArticle(selfAlienType);
+            function generateUserName() {
+                const list1 = [
+                    'Admirable', 'Agile', 'Audacious',
+                    'Brave', 'Brilliant', 'Bold',
+                    'Champion', 'Cogent', 'Courageous',
+                    'Daring', 'Dauntless', 'Discerning',
+                    'Enterprising', 'Erudite', 'Exemplary', 'Expert',
+                    'Fearless',
+                    'Genius', 'Gifted',
+                    'Heroic',
+                    'Imaginative', 'Indomitable', 'Innovative', 'Intrepid', 'Inventive',
+                    'Learned', 'Lionhearted',
+                    'Majestic', 'Master', 'Meticulous', 'Mighty',
+                    'Observant', 'Outstanding',
+                    'Perservering', 'Perspicacious', 'Pragmatic', 'Prodigy', 'Proficient', 'Prudent',
+                    'Resourceful',
+                    'Sagacious', 'Skilled', 'Sophisticated', 'Steadfast', 'Systematic',
+                    'Tenacious',
+                    'Undaunted', 'Unwavering',
+                    'Wild', 'Wise',
+                    'Valient', 'Valorous', 'Vigilant', 'Visionary'
+                ];
+                const list2 = [
+                    'Adventurer', 'Alien', 'Astronaut',
+                    'Cosmonaut',
+                    'Expeditionist', 'Explorer', 'Extraterrestrial',
+                    'Navigator',
+                    'Astro-Nomad',
+                    'Pathfinder',
+                    'Spacefarer',
+                    'Traveler',
+                    'Voyager'
+                ];
+                function getRandomElement(arr) {
+                    return arr[Math.floor(Math.random() * arr.length)];
+                }
+                const randomWord1 = getRandomElement(list1);
+                const randomWord2 = getRandomElement(list2);
+                const randomNumber = Math.floor(Math.random() * 100000);
+                return `${randomWord1} ${randomWord2} ${randomNumber}`;
+            }
+            const userName = generateUserName();
+            function generatePlanetName() {
+                const list1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const randomNumber = (max) => Math.floor(Math.random() * max);
+                function getRandomElement(arr) {
+                    return arr[Math.floor(Math.random() * arr.length)];
+                }
+                const randomLetter = getRandomElement(list1);
+                const randomNum = randomNumber(10000000);
+                return `${randomLetter}-${randomNum}`;
+            }
+            const planetName = generatePlanetName();
+            var config = {
+                type: Phaser.AUTO, width: 320, height: 568,
+                scale: {
+                    mode: Phaser.Scale.FIT,
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                },
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: {
+                            y: 0
+                        }
+                    }
+                },
+                scene: {
+                    preload: preload,
+                    create: create,
+                    update: update
+                },
+                autoRound: false
+            };
+            var game = new Phaser.Game(config);
+            var banner;
+            var fontSize = 32;
+            function preload() {
+                this.load.setBaseURL('');
+                this.load.image('porthole', 'assets/porthole.png');
+                this.load.image('stars', 'assets/star.png');
+                this.load.image('buttonX', 'assets/X.png');
+                this.load.image('meter1', 'assets/meter1.png');
+                this.load.image('meter2', 'assets/meter2.png');
+                this.load.image('meter3', 'assets/meter3.png');
+                this.load.image('meter4', 'assets/meter4.png');
+                this.load.image('meter5', 'assets/meter5.png');
+                this.load.image('meter6', 'assets/meter6.png');
+                this.load.image('meter7', 'assets/meter7.png');
+                this.load.image('meter8', 'assets/meter8.png');
+                this.load.image('meter9', 'assets/meter9.png');
+                this.load.image('meter10', 'assets/meter10.png');
+                this.load.image('upgradeButton', 'assets/upgradebutton.png');
+                this.load.image('weaponsButton', 'assets/weaponsbutton.png');
+                this.load.image('spaceLaserButton', 'assets/spacelaserbutton.png');
+                this.load.image('hyperWarpButton', 'assets/hyperwarpbutton.png');
+                this.load.image('forceFieldButton', 'assets/forcefieldbutton.png');
+                this.load.image('leaderboardButton', 'assets/leaderboardbutton.png');
+                this.load.image('settingsButton', 'assets/settingsbutton.png');
+                this.load.image('modalWindow7fc97f', 'assets/modalwindow7fc97f.png');
+                this.load.image('modalWindow00ff00', 'assets/modalwindow00ff00.png');
+                this.load.image('modalWindow00ffff', 'assets/modalwindow00ffff.png');
+                this.load.image('modalWindowff00ff', 'assets/modalwindowff00ff.png');
+                this.load.image('modalWindowff0000', 'assets/modalwindowff0000.png');
+                this.load.image('launchButton', 'assets/launchbutton.png');
+                this.load.image('backButton', 'assets/backbutton.png');
+                this.load.image('iaaaaaa', 'assets/iaaaaaa.png');
+                this.load.image('iiaaaaaa', 'assets/iiaaaaaa.png');
+                this.load.image('iiiaaaaaa', 'assets/iiiaaaaaa.png');
+                this.load.image('ivaaaaaa', 'assets/ivaaaaaa.png');
+                this.load.image('vaaaaaa', 'assets/vaaaaaa.png');
+                this.load.image('viaaaaaa', 'assets/viaaaaaa.png');
+                this.load.image('viiaaaaaa', 'assets/viiaaaaaa.png');
+                this.load.image('viiiaaaaaa', 'assets/viiiaaaaaa.png');
+                this.load.image('ixaaaaaa', 'assets/ixaaaaaa.png');
+                this.load.image('xaaaaaa', 'assets/xaaaaaa.png');
+                this.load.image('xiaaaaaa', 'assets/xiaaaaaa.png');
+                this.load.image('xiiaaaaaa', 'assets/xiiaaaaaa.png');
+                this.load.image('xiiiaaaaaa', 'assets/xiiiaaaaaa.png');
+                this.load.image('xivaaaaaa', 'assets/xivaaaaaa.png');
+                this.load.image('gc00ff00', 'assets/galaxycraft00ff00.png');
+                this.load.image('i00ff00', 'assets/i00ff00.png');
+                this.load.image('ii00ff00', 'assets/ii00ff00.png');
+                this.load.image('iii00ff00', 'assets/iii00ff00.png');
+                this.load.image('iv00ff00', 'assets/iv00ff00.png');
+                this.load.image('v00ff00', 'assets/v00ff00.png');
+                this.load.image('vi00ff00', 'assets/vi00ff00.png');
+                this.load.image('vii00ff00', 'assets/vii00ff00.png');
+                this.load.image('viii00ff00', 'assets/viii00ff00.png');
+                this.load.image('ix00ff00', 'assets/ix00ff00.png');
+                this.load.image('x00ff00', 'assets/x00ff00.png');
+                this.load.image('xi00ff00', 'assets/xi00ff00.png');
+                this.load.image('xii00ff00', 'assets/xii00ff00.png');
+                this.load.image('xiii00ff00', 'assets/xiii00ff00.png');
+                this.load.image('xiv00ff00', 'assets/xiv00ff00.png');
+                this.load.image('gc00ffff', 'assets/galaxycraft00ffff.png');
+                this.load.image('i00ffff', 'assets/i00ffff.png');
+                this.load.image('ii00ffff', 'assets/ii00ffff.png');
+                this.load.image('iii00ffff', 'assets/iii00ffff.png');
+                this.load.image('iv00ffff', 'assets/iv00ffff.png');
+                this.load.image('v00ffff', 'assets/v00ffff.png');
+                this.load.image('vi00ffff', 'assets/vi00ffff.png');
+                this.load.image('vii00ffff', 'assets/vii00ffff.png');
+                this.load.image('viii00ffff', 'assets/viii00ffff.png');
+                this.load.image('ix00ffff', 'assets/ix00ffff.png');
+                this.load.image('x00ffff', 'assets/x00ffff.png');
+                this.load.image('xi00ffff', 'assets/xi00ffff.png');
+                this.load.image('xii00ffff', 'assets/xii00ffff.png');
+                this.load.image('xiii00ffff', 'assets/xiii00ffff.png');
+                this.load.image('xiv00ffff', 'assets/xiv00ffff.png');
+                this.load.image('gcff00ff', 'assets/galaxycraftff00ff.png');
+                this.load.image('iff00ff', 'assets/iff00ff.png');
+                this.load.image('iiff00ff', 'assets/iiff00ff.png');
+                this.load.image('iiiff00ff', 'assets/iiiff00ff.png');
+                this.load.image('ivff00ff', 'assets/ivff00ff.png');
+                this.load.image('vff00ff', 'assets/vff00ff.png');
+                this.load.image('viff00ff', 'assets/viff00ff.png');
+                this.load.image('viiff00ff', 'assets/viiff00ff.png');
+                this.load.image('viiiff00ff', 'assets/viiiff00ff.png');
+                this.load.image('ixff00ff', 'assets/ixff00ff.png');
+                this.load.image('xff00ff', 'assets/xff00ff.png');
+                this.load.image('xiff00ff', 'assets/xiff00ff.png');
+                this.load.image('xiiff00ff', 'assets/xiiff00ff.png');
+                this.load.image('xiiiff00ff', 'assets/xiiiff00ff.png');
+                this.load.image('xivff00ff', 'assets/xivff00ff.png');
+                this.load.image('gcff0000', 'assets/galaxycraftff0000.png');
+                this.load.image('iff0000', 'assets/iff0000.png');
+                this.load.image('iiff0000', 'assets/iiff0000.png');
+                this.load.image('iiiff0000', 'assets/iiiff0000.png');
+                this.load.image('ivff0000', 'assets/ivff0000.png');
+                this.load.image('vff0000', 'assets/vff0000.png');
+                this.load.image('viff0000', 'assets/viff0000.png');
+                this.load.image('viiff0000', 'assets/viiff0000.png');
+                this.load.image('viiiff0000', 'assets/viiiff0000.png');
+                this.load.image('ixff0000', 'assets/ixff0000.png');
+                this.load.image('xff0000', 'assets/xff0000.png');
+                this.load.image('xiff0000', 'assets/xiff0000.png');
+                this.load.image('xiiff0000', 'assets/xiiff0000.png');
+                this.load.image('xiiiff0000', 'assets/xiiiff0000.png');
+                this.load.image('xivff0000', 'assets/xivff0000.png');
+                this.load.image('CYL', 'assets/cylanobium.png');
+                this.load.image('CYS', 'assets/cysteon.png');
+                this.load.image('PHM', 'assets/phemmulion.png');
+                this.load.image('VTR', 'assets/vittrium.png');
+                this.load.image('GLP', 'assets/glyptal.png');
+                this.load.image('MON', 'assets/mondrium.png');
+                this.load.image('LLU', 'assets/lluoyium.png');
+                this.load.image('TRU', 'assets/truiomium.png');
+                this.load.image('logo', 'assets/starvoyagelogo2.png');
+            }
+            let alienBanner;
+            function create() {
+                var logo = this.add.image(160, 284, 'logo').setDepth(4);
+                this.tweens.add({
+                    targets: logo, alpha: 0, duration: 500, ease: 'Linear', delay: 2000,
+                    onComplete: function () { logo.setVisible(false); }
+                });
+                var graphics = this.add.graphics();
+                graphics.fillStyle(0xFFFFFF);
+                graphics.fillRect(0, 0, 320, 568);
+                var maskImage = this.add.image(160, 284, 'porthole').setScale(0.5);
+                var mask = maskImage.createBitmapMask();
+                var particles = this.add.particles('stars');
+                var emitter1 = particles.createEmitter({
+                    speed: 50,
+                    scale: { start: 0, end: 0.6 },
+                    blendMode: 'ADD',
+                    lifespan: 2000,
+                    mask: mask
+                });
+                var emitter2 = particles.createEmitter({
+                    speed: { min: -100, max: 100 },
+                    angle: { min: 0, max: 360 },
+                    scale: { start: 0, end: 0.3 },
+                    blendMode: 'ADD',
+                    lifespan: 1000,
+                    mask: mask
+                });
+                emitter1.setPosition(160, 284);
+                emitter2.setPosition(160, 284);
+                function createInteractiveText(scene, content, fontSize, x, y, spacing, clickEvent) {
+                    const text = scene.add.text(x, y, content, {
+                        fontSize: fontSize,
+                        fill: '#000000',
+                        align: 'center',
+                        fontStyle: 'bold',
+                        wordWrap: { width: scene.sys.game.config.width, useAdvancedWrap: true }
+                    }).setDepth(3).setOrigin(0.5, 0);
+                    text.setInteractive({ useHandCursor: true });
+                    text.on('pointerover', () => { text.setFontSize(parseInt(fontSize) + 2); });
+                    text.on('pointerout', () => { text.setFontSize(fontSize); });
+                    text.on('pointerdown', () => { clickEvent(); });
+                    text.spacing = spacing;
+                    return text;
+                }
+                function showModalWindow(scene, content, fontSize, onCloseCallback, modalColor, modalButtons = []) {
+                    var objects = scene.children.list;
+                    var objsToDisable = objects.filter(obj => obj.depth < 2 && obj.input && obj.input.enabled);
+                    objsToDisable.forEach(obj => obj.disableInteractive());
+                    var modal = scene.add.image(160, 284, modalColor).setDepth(2);
+                    const buttonX = scene.add.image(300, 145, 'buttonX').setDepth(2).setScale(0.7);
+                    buttonX.setInteractive();
+                    buttonX.setOrigin(0.5, 0.5);
+                    buttonX.on('pointerover', () => { buttonX.setScale(0.8); });
+                    buttonX.on('pointerout', () => { buttonX.setScale(0.7); });
+                    let totalHeight = 0;
+                    let contentTextObjects = [];
+                    content.forEach((line, index) => {
+                        const text = scene.add.text(modal.x, modal.y - 170 + totalHeight, line.text, {
+                            fontSize: fontSize,
+                            fill: '#000000',
+                            align: 'center',
+                            fontStyle: 'bold',
+                            wordWrap: { width: modal.width * 1, useAdvancedWrap: true }
+                        }).setDepth(3).setOrigin(0.5, 0);
+                        totalHeight += text.height + line.spacing;
+                        contentTextObjects.push(text);
+                    });
+                    buttonX.on('pointerdown', function () {
+                        modal.destroy();
+                        buttonX.destroy();
+                        contentTextObjects.forEach(textObject => textObject.destroy());
+                        modalButtons.forEach(button => button.destroy());
+                        objsToDisable.forEach(obj => obj.setInteractive());
+                        if (onCloseCallback) { onCloseCallback(); }
+                    });
+                    buttonX.setOrigin(1, 0);
+                    return { modal, closeButton: buttonX };
+                }
+                var fuelMeterLevel = 1;
+                const spacingNumFuel = 4
+                const fuelFontSize = 17
+                const spacingNumFuelLineBreak = spacingNumFuel + fuelFontSize
+                var fuelSensor = this.add.image(80, 65, 'meter' + fuelMeterLevel);
+                fuelSensor.setInteractive();
+                fuelSensor.on('pointerover', () => { fuelSensor.setScale(1.1); });
+                fuelSensor.on('pointerout', () => { fuelSensor.setScale(1); });
+                fuelSensor.on('pointerdown', () => {
+                    const fuelSensorContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'Your spaceship cannot', spacing: spacingNumFuel },
+                        { text: 'function without Cylanobium', spacing: spacingNumFuel },
+                        { text: 'and will explode if you', spacing: spacingNumFuel },
+                        { text: 'run out of fuel.', spacing: spacingNumFuelLineBreak },
+                        { text: 'Level I: No advance warning', spacing: spacingNumFuel },
+                        { text: 'Level II: 30 second warning', spacing: spacingNumFuel },
+                        { text: 'Level III: 1 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level IV: 2 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level V: 3 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level VI: 5 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level VII: 10 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level VIII: 15 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level IX: 30 minute warning', spacing: spacingNumFuel },
+                        { text: 'Level X: Unlimited warning', spacing: 0 }
+                    ]
+                    showModalWindow(this, fuelSensorContent, `${fuelFontSize}px`, null, 'modalWindow7fc97f');
+                });
+                var text = this.add.text(
+                    fuelSensor.x, fuelSensor.y + fuelSensor.height / 2, 'Fuel Sensor', {
+                    fontFamily: 'Arial', fontSize: 16, color: '#000000'
+                });
+                text.setOrigin(0.5, 0);
+                var spaceTimeMeterLevel = 1
+                const spacingNumSpaceTime = 1
+                const spaceTimeFontSize = 16
+                const spacingNumSpaceTimeBreak = spacingNumSpaceTime + spaceTimeFontSize
+                var spaceTimeSensor = this.add.image(240, 65, 'meter' + spaceTimeMeterLevel)
+                spaceTimeSensor.setInteractive();
+                spaceTimeSensor.on('pointerover', () => { spaceTimeSensor.setScale(1.1); });
+                spaceTimeSensor.on('pointerout', () => { spaceTimeSensor.setScale(1); });
+                spaceTimeSensor.on('pointerdown', () => {
+                    const spaceTimeSensorContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'The spacetime sensor', spacing: spacingNumSpaceTime },
+                        { text: 'warns you of black', spacing: spacingNumSpaceTime },
+                        { text: 'holes by detecting', spacing: spacingNumSpaceTime },
+                        { text: 'distortions in spacetime.', spacing: spacingNumSpaceTimeBreak },
+                        { text: 'If you know 20+ minutes in', spacing: spacingNumSpaceTime },
+                        { text: "advance, you'll be able to", spacing: spacingNumSpaceTime },
+                        { text: 'change course and avoid them.', spacing: spacingNumSpaceTimeBreak },
+                        { text: 'Level I: No advance warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level II: 30 second warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level III: 1 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level IV: 2 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level V: 3 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level VI: 5 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level VII: 10 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level VIII: 15 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level IX: 30 minute warning', spacing: spacingNumSpaceTime },
+                        { text: 'Level X: 1 hour warning', spacing: 0 }
+                    ]
+                    showModalWindow(this, spaceTimeSensorContent, `${spaceTimeFontSize}px`, null, 'modalWindow7fc97f');
+                });
+                var text = this.add.text(
+                    spaceTimeSensor.x, spaceTimeSensor.y + spaceTimeSensor.height / 2, 'Spacetime Sensor', {
+                    fontFamily: 'Arial', fontSize: 16, color: '#000000'
+                }
+                );
+                text.setOrigin(0.5, 0);
+                var alienMeterLevel = 1
+                const spacingNumAlien = 1
+                const alienFontSize = 15
+                const spacingNumAlienLineBreak = spacingNumAlien + alienFontSize
+                var alienSensor = this.add.image(80, 100, 'meter' + alienMeterLevel)
+                alienSensor.setInteractive();
+                alienSensor.on('pointerover', () => { alienSensor.setScale(1.1); });
+                alienSensor.on('pointerout', () => { alienSensor.setScale(1); });
+                alienSensor.on('pointerdown', () => {
+                    const alienSensorContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'If you know 4+ minutes in', spacing: spacingNumAlien },
+                        { text: "advance, you'll be able to", spacing: spacingNumAlien },
+                        { text: 'change course and avoid aliens.', spacing: spacingNumAlienLineBreak },
+                        { text: 'High level Alien Sensors', spacing: spacingNumAlien },
+                        { text: 'such as Level IX or X also', spacing: spacingNumAlien },
+                        { text: 'can detect whether incoming', spacing: spacingNumAlien },
+                        { text: 'aliens are Freindly Aliens,', spacing: spacingNumAlien },
+                        { text: 'Tax Aliens, or Evil Aliens.', spacing: spacingNumAlienLineBreak },
+                        { text: 'Level I: No advance warning', spacing: spacingNumAlien },
+                        { text: 'Level II: 30 second warning', spacing: spacingNumAlien },
+                        { text: 'Level III: 1 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level IV: 2 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level V: 3 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level VI: 5 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level VII: 10 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level VIII: 15 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level IX: 30 minute warning', spacing: spacingNumAlien },
+                        { text: 'Level X: 1 hour warning', spacing: 0 }
+                    ]
+                    showModalWindow(this, alienSensorContent, `${alienFontSize}px`, null, 'modalWindow7fc97f');
+                });
+                var text = this.add.text(
+                    alienSensor.x, alienSensor.y + alienSensor.height / 2, 'Alien Sensor', {
+                    fontFamily: 'Arial', fontSize: 16, color: '#000000'
+                }
+                );
+                text.setOrigin(0.5, 0);
+                var elementMeterLevel = 1
+                const spacingNumElement = 3
+                var elementSensor = this.add.image(240, 100, 'meter' + elementMeterLevel)
+                elementSensor.setInteractive();
+                elementSensor.on('pointerover', () => { elementSensor.setScale(1.1); });
+                elementSensor.on('pointerout', () => { elementSensor.setScale(1); });
+                elementSensor.on('pointerdown', () => {
+                    const elementSensorContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'Level I: 0-1+', spacing: spacingNumElement },
+                        { text: 'Level II: 0-3+', spacing: spacingNumElement },
+                        { text: 'Level III: 0-10+', spacing: spacingNumElement },
+                        { text: 'Level IV: 0-32+', spacing: spacingNumElement },
+                        { text: 'Level V: 0-100+', spacing: spacingNumElement },
+                        { text: 'Level VI: 0-316+', spacing: spacingNumElement },
+                        { text: 'Level VII: 0-1000+', spacing: spacingNumElement },
+                        { text: 'Level VIII: 0-3162+', spacing: spacingNumElement },
+                        { text: 'Level IX: 0-10000+', spacing: spacingNumElement },
+                        { text: 'Level X: 0-Unlimited', spacing: 15 },
+                        { text: 'Higher levels allow', spacing: spacingNumElement },
+                        { text: 'higher element numbers', spacing: spacingNumElement },
+                        { text: 'to be shown.', spacing: 0 }
+                    ]
+                    showModalWindow(this, elementSensorContent, '20px', null, 'modalWindow7fc97f');
+                });
+                var text = this.add.text(
+                    elementSensor.x, elementSensor.y + elementSensor.height / 2, 'Element Sensor', {
+                    fontFamily: 'Arial', fontSize: 16, color: '#000000'
+                }
+                );
+                text.setOrigin(0.5, 0);
+                const spacingNumUpgrade = 10
+                var upgradeButton = this.add.image(50, 180, 'upgradeButton').setScale(0.8);
+                upgradeButton.setInteractive();
+                upgradeButton.on('pointerover', () => { upgradeButton.setScale(0.9); });
+                upgradeButton.on('pointerout', () => { upgradeButton.setScale(0.8); });
+                upgradeButton.on('pointerdown', () => {
+                    const upgradeButtonContent = [
+                        { text: '', spacing: spacingNumUpgrade },
+                        { text: 'Double', spacing: spacingNumUpgrade },
+                        { text: 'spaceship', spacing: spacingNumUpgrade },
+                        { text: 'drop rate for', spacing: spacingNumUpgrade },
+                        { text: 'three days for', spacing: spacingNumUpgrade },
+                        { text: 'only 99¢', spacing: 0 }
+                    ]
+                    showModalWindow(this, upgradeButtonContent, '30px', null, 'modalWindow7fc97f');
+                });
+                var weaponsButton = this.add.image(270, 180, 'weaponsButton').setScale(0.8);
+                weaponsButton.setInteractive();
+                weaponsButton.on('pointerover', () => { weaponsButton.setScale(0.9); });
+                weaponsButton.on('pointerout', () => { weaponsButton.setScale(0.8); });
+                weaponsButton.on('pointerdown', () => {
+                    const weaponsButtonContent = [
+                        { text: '', spacing: 10 },
+                        { text: 'Blow up aliens', spacing: 71 },
+                        { text: 'Teleport across the galaxy to escape aliens and black holes', spacing: 69 },
+                        { text: 'Become invincible against aliens and black holes', spacing: 0 },
+                    ];
+                    let tempWeaponsButtons = createWeaponsButtons(this, 160, 284, 2);
+                    const { modal, closeButton } = showModalWindow(this, weaponsButtonContent, '17px', null, 'modalWindow7fc97f', tempWeaponsButtons);
+                });
+                function createWeaponsButtons(scene, modalX, modalY, modalDepth) {
+                    let buttons = [];
+                    const createButton = (x, y, key, onPointerover, onPointerout, onClick) => {
+                        const button = scene.add.image(x, y, key).setDepth(modalDepth + 1).setScale(onPointerout);
+                        button.setInteractive();
+                        button.on('pointerover', () => { button.setScale(onPointerover); });
+                        button.on('pointerout', () => { button.setScale(onPointerout); });
+                        button.on('pointerdown', onClick);
+                        return button;
+                    };
+                    buttons.push(createButton(modalX, modalY - 90, 'spaceLaserButton', 0.6, 0.57, () => console.log('Space Laser Button clicked')));
+                    buttons.push(createButton(modalX, modalY + 10, 'hyperWarpButton', 0.6, 0.57, () => console.log('Hyper Warp Button clicked')));
+                    buttons.push(createButton(modalX, modalY + 110, 'forceFieldButton', 0.6, 0.57, () => console.log('Force Field Button clicked')));
+                    return buttons;
+                }
+                const spacingNumLeaderboard = 22;
+                const leaderboardFontSize = '16px'
+                var leaderboardButton = this.add.image(50, 388, 'leaderboardButton').setScale(0.8);
+                leaderboardButton.setInteractive();
+                leaderboardButton.on('pointerover', () => { leaderboardButton.setScale(0.9); });
+                leaderboardButton.on('pointerout', () => { leaderboardButton.setScale(0.8); });
+                leaderboardButton.on('pointerdown', () => {
+                    showModalWindow(this, [], '18px', null, 'modalWindow7fc97f', () => {
+                        interactiveTexts.forEach(text => text.destroy());
+                        topTenText.destroy();
+                    });
+                    const modal = this.children.list.find(obj => obj.texture && obj.texture.key === 'modalWindow7fc97f');
+                    const topTenText = this.add.text(modal.x, modal.y - (modal.height / 2) + 20, 'TOP TEN:', {
+                        fontSize: leaderboardFontSize,
+                        fill: '#000000',
+                        fontStyle: 'bold'
+                    }).setDepth(3).setOrigin(0.5, 0);
+                    const leaderboardButtonContent = [
+                        'Longest Total Survival Time',
+                        'Longest Time In A Black Hole',
+                        'Most Black Holes Survived',
+                        'Most Aliens Defeated',
+                        'Most Cylanobiums',
+                        'Most Cysteons',
+                        'Most Phemmulions',
+                        'Most Vittriums',
+                        'Most Glyptals',
+                        'Most Mondriums',
+                        'Most Lluoyiums',
+                        'Most Truiomiums'
+                    ];
+                    const interactiveTexts = leaderboardButtonContent.map((text, index) => {
+                        const yPos = topTenText.y + topTenText.height + index * spacingNumLeaderboard;
+                        const interactiveText = createInteractiveText(this, text.trim(), leaderboardFontSize, 0, yPos + 10, spacingNumLeaderboard, () => {
+                            console.log(text.trim() + ' clicked');
+                        });
+                        return interactiveText;
+                    });
+                    interactiveTexts.forEach(interactiveText => { interactiveText.x = modal.x; interactiveText.setOrigin(0.5, 0); });
+                });
+                const spacingNumSettings = 10
+                var settingsButton = this.add.image(270, 388, 'settingsButton').setScale(0.8);
+                settingsButton.setInteractive();
+                settingsButton.on('pointerover', () => { settingsButton.setScale(0.9); });
+                settingsButton.on('pointerout', () => { settingsButton.setScale(0.8); });
+                settingsButton.on('pointerdown', () => {
+                    const settingsButtonContent = [
+                        { text: '', spacing: spacingNumSettings },
+                        { text: 'Your Username:', spacing: 60 },
+                        { text: 'Your Bio:', spacing: spacingNumSettings },
+                        { text: `I am ${article} ${selfAlienType}`, spacing: spacingNumSettings },
+                        { text: `from the planet ${planetName}.`, spacing: 0 },
+                    ];
+                    const modalData = showModalWindow(this, settingsButtonContent, '14px', () => {}, 'modalWindow7fc97f');
+                    const closeButton = modalData.closeButton;
+                    const modal = this.children.list.find(obj => obj.texture && obj.texture.key === 'modalWindow7fc97f');
+                    const usernameText = this.add.text(modal.x, modal.y - 120, `${userName}`, {
+                        fontSize: '14px',
+                        fill: '#000000',
+                        fontStyle: 'bold',
+                        align: 'center',
+                        wordWrap: { width: 250, useAdvancedWrap: true },
+                    }).setDepth(3).setOrigin(0.5, 0);
+                    usernameText.setInteractive({ useHandCursor: true });
+                    usernameText.on('pointerover', () => { usernameText.setFontSize(parseInt('14px') + 2); });
+                    usernameText.on('pointerout', () => { usernameText.setFontSize('14px'); });
+                    usernameText.on('pointerdown', () => { console.log('username clicked') });
+                    closeButton.on('pointerdown', () => {
+                        usernameText.destroy();
+                    });
+                });
+                let firstModalCloseButton;
+                var gc00ff00 = this.add.image(40, 30, 'gc00ff00');
+                gc00ff00.setInteractive();
+                gc00ff00.on('pointerover', () => { gc00ff00.setScale(1.1); });
+                gc00ff00.on('pointerout', () => { gc00ff00.setScale(1); });
+                var gc00ff00 = this.add.image(40, 30, 'gc00ff00');
+                gc00ff00.setInteractive();
+                gc00ff00.on('pointerover', () => { gc00ff00.setScale(1.1); });
+                gc00ff00.on('pointerout', () => { gc00ff00.setScale(1); });
+                gc00ff00.on('pointerdown', () => {
+                    const gc00ff00Content = [
+                        { text: '', spacing: 5 },
+                        { text: 'GALAXYCRAFT LEVELS', spacing: 0 }
+                    ];
+                    let tempGc00ff00Buttons = creategc00ff00Buttons(this, 160, 284, 2);
+                    const modalData = showModalWindow(this, gc00ff00Content, '25px', () => {
+                        tempGc00ff00Buttons.forEach(button => button.destroy());
+                    }, 'modalWindow00ff00', tempGc00ff00Buttons);
+                    firstModalCloseButton = modalData.closeButton;
+                });
+                function creategc00ff00Buttons(scene, modalX, modalY, modalDepth) {
+                    let buttons = [];
+                    const createButton = (x, y, key, onPointerover, onPointerout, onClick) => {
+                        const button = scene.add.image(x, y, key).setDepth(modalDepth + 1).setScale(onPointerout);
+                        button.setInteractive();
+                        button.on('pointerover', () => { button.setScale(onPointerover); });
+                        button.on('pointerout', () => { button.setScale(onPointerout); });
+                        button.on('pointerdown', onClick);
+                        return button;
+                    }
+                    const gc00ff00Pointerout = 0.9
+                    const gc00ff00Pointerover = 1
+                    const gc00ff00Num1 = 15
+                    const gc00ff00Num2 = gc00ff00Num1 * 3
+                    const gc00ff00Num3 = gc00ff00Num1 * 4
+                    const gc00ff00Num4 = gc00ff00Num1 * 5
+                    const gc00ff00Num5 = gc00ff00Num1 * 7
+                    const gc00ff00Num6 = gc00ff00Num1 * 8
+                    let textObjects = [];
+                    buttons.push(createButton(
+                        modalX - gc00ff00Num6, modalY - gc00ff00Num4, 'i00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => {
+                            var objects = scene.children.list;
+                            var modal2 = scene.add.image(160, 284, 'modalWindow7fc97f').setDepth(4);
+                            const content2 = [
+                                { text: '', spacing: 100 },
+                                { text: 'GalaxyCraft', fontSize: '20px', spacing: 10 },
+                                { text: 'Level I', fontSize: '20px', spacing: 10 },
+                                { text: 'Mission Time: 30 Seconds', fontSize: '20px', spacing: 10 },
+                                { text: 'Fuel:', fontSize: '20px', spacing: 30 },
+                                { text: '1', fontSize: '20px', spacing: 0 }
+                            ];
+                            let totalHeight = 0;
+                            content2.forEach((line, index) => {
+                            const text = scene.add.text(modal2.x, modal2.y - 250 + totalHeight, line.text, {
+                                fontSize: line.fontSize,
+                                fill: '#000000',
+                                align: 'center',
+                                fontStyle: 'bold',
+                                wordWrap: { width: modal2.width * 1, useAdvancedWrap: true }
+                            }).setDepth(5).setOrigin(0.5, 0);
+                            totalHeight += text.height + line.spacing;
+                            textObjects.push(text);
+                            });
+                            const buttonX2 = createButton(
+                                modal2.x + 120, modal2.y - 120, 'buttonX', 0.8, 0.7,
+                                () => {
+                                    firstModalCloseButton.emit('pointerdown', firstModalCloseButton);
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                            const backButton = createButton(
+                                modal2.x, modal2.y + 110, 'backButton', gc00ff00Pointerover, gc00ff00Pointerout,
+                                () => {
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                            const launchButton = createButton(
+                                modal2.x, modal2.y + 30, 'launchButton', 0.6, 0.57,
+                                () => {
+                                    console.log("i00ff00 launch button pressed");
+                                    firstModalCloseButton.emit('pointerdown', firstModalCloseButton);
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                        }
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ff00Num3, modalY - gc00ff00Num4, 'ii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => {
+                            var objects = scene.children.list;
+                            var modal2 = scene.add.image(160, 284, 'modalWindow7fc97f').setDepth(4);
+                            const content2 = [
+                                { text: '', spacing: 100 },
+                                { text: 'New Content Text', fontSize: '25px', spacing: 0 }
+                            ];
+                            let totalHeight = 0;
+                            content2.forEach((line, index) => {
+                            const text = scene.add.text(modal2.x, modal2.y - 170 + totalHeight, line.text, {
+                                fontSize: line.fontSize,
+                                fill: '#000000',
+                                align: 'center',
+                                fontStyle: 'bold',
+                                wordWrap: { width: modal2.width * 1, useAdvancedWrap: true }
+                            }).setDepth(5).setOrigin(0.5, 0);
+                            totalHeight += text.height + line.spacing;
+                            textObjects.push(text);
+                            });
+                            const buttonX2 = createButton(
+                                modal2.x + 120, modal2.y - 120, 'buttonX', 0.8, 0.7,
+                                () => {
+                                    firstModalCloseButton.emit('pointerdown', firstModalCloseButton);
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                            const backButton = createButton(
+                                modal2.x - 90, modal2.y + 110, 'backButton', gc00ff00Pointerover, gc00ff00Pointerout,
+                                () => {
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                            const launchButton = createButton(
+                                modal2.x, modal2.y + 50, 'launchButton', 0.6, 0.57,
+                                () => {
+                                    console.log("ii00ff00 launch button pressed");
+                                    firstModalCloseButton.emit('pointerdown', firstModalCloseButton);
+                                    modal2.destroy();
+                                    buttonX2.destroy();
+                                    backButton.destroy();
+                                    launchButton.destroy();
+                                    textObjects.forEach(text => text.destroy());
+                                    textObjects = [];
+                                }
+                            ).setDepth(4);
+                        }
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gc00ff00Num4, 'iii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('iiigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num3, modalY - gc00ff00Num4, 'iv00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('ivgc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num6, modalY - gc00ff00Num4, 'v00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('vgc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - 120, modalY - gc00ff00Num1, 'vi00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('vigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ff00Num3, modalY - gc00ff00Num1, 'vii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('viigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gc00ff00Num1, 'viii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('viiigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num3, modalY - gc00ff00Num1, 'ix00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('ixgc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num6, modalY - gc00ff00Num1, 'x00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('xgc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ff00Num4, modalY + gc00ff00Num2, 'xi00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('xigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num4, modalY + gc00ff00Num2, 'xii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('xiigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ff00Num4, modalY + gc00ff00Num5, 'xiii00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('xiiigc00ff00 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ff00Num4, modalY + gc00ff00Num5, 'xiv00ff00', gc00ff00Pointerover, gc00ff00Pointerout,
+                        () => console.log('xivgc00ff00 clicked')
+                    ));
+                    return buttons;
+                }
+                const gc00ffffSpacing = 1
+                var gc00ffff = this.add.image(120, 30, 'gc00ffff');
+                gc00ffff.setInteractive();
+                gc00ffff.on('pointerover', () => { gc00ffff.setScale(1.1); });
+                gc00ffff.on('pointerout', () => { gc00ffff.setScale(1); });
+                gc00ffff.on('pointerdown', () => {
+                    const gc00ffffContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'GALAXYCRAFT LEVELS', spacing: 0 }
+                    ];
+                    let gc00ffffButtons = [];
+                    const { modal, closeButton } = showModalWindow(this, gc00ffffContent, '25px', null, 'modalWindow00ffff', () => {
+                        gc00ffffButtons.forEach(button => button.destroy());
+                    });
+                    if (modal) { const gc00ffffButtons = creategc00ffffButtons(this, modal.x, modal.y, modal.depth); }
+                });
+                function creategc00ffffButtons(scene, modalX, modalY, modalDepth) {
+                    let buttons = [];
+                    const createButton = (x, y, key, onPointerover, onPointerout, onClick) => {
+                        const button = scene.add.image(x, y, key).setDepth(modalDepth + 1).setScale(onPointerout);
+                        button.setInteractive();
+                        button.on('pointerover', () => { button.setScale(onPointerover); });
+                        button.on('pointerout', () => { button.setScale(onPointerout); });
+                        button.on('pointerdown', onClick);
+                        return button;
+                    }
+                    const gc00ffffPointerout = 0.9
+                    const gc00ffffPointerover = 1
+                    const gc00ffffNum1 = 15
+                    const gc00ffffNum2 = gc00ffffNum1 * 3
+                    const gc00ffffNum3 = gc00ffffNum1 * 4
+                    const gc00ffffNum4 = gc00ffffNum1 * 5
+                    const gc00ffffNum5 = gc00ffffNum1 * 7
+                    const gc00ffffNum6 = gc00ffffNum1 * 8
+                    buttons.push(createButton(
+                        modalX - gc00ffffNum6, modalY - gc00ffffNum4, 'i00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('igc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ffffNum3, modalY - gc00ffffNum4, 'ii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('iigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gc00ffffNum4, 'iii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('iiigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum3, modalY - gc00ffffNum4, 'iv00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('ivgc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum6, modalY - gc00ffffNum4, 'v00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('vgc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - 120, modalY - gc00ffffNum1, 'vi00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('vigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ffffNum3, modalY - gc00ffffNum1, 'vii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('viigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gc00ffffNum1, 'viii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('viiigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum3, modalY - gc00ffffNum1, 'ix00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('ixgc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum6, modalY - gc00ffffNum1, 'x00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('xgc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ffffNum4, modalY + gc00ffffNum2, 'xi00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('xigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum4, modalY + gc00ffffNum2, 'xii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('xiigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gc00ffffNum4, modalY + gc00ffffNum5, 'xiii00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('xiiigc00ffff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gc00ffffNum4, modalY + gc00ffffNum5, 'xiv00ffff', gc00ffffPointerover, gc00ffffPointerout,
+                        () => console.log('xivgc00ffff clicked')
+                    ));
+                }
+                const gcff00ffSpacing = 1
+                var gcff00ff = this.add.image(200, 30, 'gcff00ff');
+                gcff00ff.setInteractive();
+                gcff00ff.on('pointerover', () => { gcff00ff.setScale(1.1); });
+                gcff00ff.on('pointerout', () => { gcff00ff.setScale(1); });
+                gcff00ff.on('pointerdown', () => {
+                    const gcff00ffContent = [
+                        { text: '', spacing: 5 },
+                        { text: 'GALAXYCRAFT LEVELS', spacing: 0 }
+                    ];
+                    let gcff00ffButtons = [];
+                    const { modal, closeButton } = showModalWindow(this, gcff00ffContent, '25px', null, 'modalWindowff00ff', () => {
+                        gcff00ffButtons.forEach(button => button.destroy());
+                    });
+                    if (modal) { const gcff00ffButtons = creategcff00ffButtons(this, modal.x, modal.y, modal.depth); }
+                });
+                function creategcff00ffButtons(scene, modalX, modalY, modalDepth) {
+                    let buttons = [];
+                    const createButton = (x, y, key, onPointerover, onPointerout, onClick) => {
+                        const button = scene.add.image(x, y, key).setDepth(modalDepth + 1).setScale(onPointerout);
+                        button.setInteractive();
+                        button.on('pointerover', () => { button.setScale(onPointerover); });
+                        button.on('pointerout', () => { button.setScale(onPointerout); });
+                        button.on('pointerdown', onClick);
+                        return button;
+                    }
+                    const gcff00ffPointerout = 0.9
+                    const gcff00ffPointerover = 1
+                    const gcff00ffNum1 = 15
+                    const gcff00ffNum2 = gcff00ffNum1 * 3
+                    const gcff00ffNum3 = gcff00ffNum1 * 4
+                    const gcff00ffNum4 = gcff00ffNum1 * 5
+                    const gcff00ffNum5 = gcff00ffNum1 * 7
+                    const gcff00ffNum6 = gcff00ffNum1 * 8
+                    buttons.push(createButton(
+                        modalX - gcff00ffNum6, modalY - gcff00ffNum4, 'iff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('igcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff00ffNum3, modalY - gcff00ffNum4, 'iiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('iigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gcff00ffNum4, 'iiiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('iiigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum3, modalY - gcff00ffNum4, 'ivff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('ivgcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum6, modalY - gcff00ffNum4, 'vff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('vgcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - 120, modalY - gcff00ffNum1, 'viff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('vigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff00ffNum3, modalY - gcff00ffNum1, 'viiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('viigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gcff00ffNum1, 'viiiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('viiigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum3, modalY - gcff00ffNum1, 'ixff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('ixgcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum6, modalY - gcff00ffNum1, 'xff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('xgcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff00ffNum4, modalY + gcff00ffNum2, 'xiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('xigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum4, modalY + gcff00ffNum2, 'xiiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('xiigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff00ffNum4, modalY + gcff00ffNum5, 'xiiiff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('xiiigcff00ff clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff00ffNum4, modalY + gcff00ffNum5, 'xivff00ff', gcff00ffPointerover, gcff00ffPointerout,
+                        () => console.log('xivgcff00ff clicked')
+                    ));
+                }
+                const gcff0000Spacing = 1
+                var gcff0000 = this.add.image(280, 30, 'gcff0000');
+                gcff0000.setInteractive();
+                gcff0000.on('pointerover', () => { gcff0000.setScale(1.1); });
+                gcff0000.on('pointerout', () => { gcff0000.setScale(1); });
+                gcff0000.on('pointerdown', () => {
+                    const gcff0000Content = [
+                        { text: '', spacing: 5 },
+                        { text: 'GALAXYCRAFT LEVELS', spacing: 0 }
+                    ];
+                    let gcff0000Buttons = [];
+                    const { modal, closeButton } = showModalWindow(this, gcff0000Content, '25px', null, 'modalWindowff0000', () => {
+                        gcff0000Buttons.forEach(button => button.destroy());
+                    });
+                    if (modal) { const gcff0000Buttons = creategcff0000Buttons(this, modal.x, modal.y, modal.depth); }
+                });
+                function creategcff0000Buttons(scene, modalX, modalY, modalDepth) {
+                    let buttons = [];
+                    const createButton = (x, y, key, onPointerover, onPointerout, onClick) => {
+                        const button = scene.add.image(x, y, key).setDepth(modalDepth + 1).setScale(onPointerout);
+                        button.setInteractive();
+                        button.on('pointerover', () => { button.setScale(onPointerover); });
+                        button.on('pointerout', () => { button.setScale(onPointerout); });
+                        button.on('pointerdown', onClick);
+                        return button;
+                    }
+                    const gcff0000Pointerout = 0.9
+                    const gcff0000Pointerover = 1
+                    const gcff0000Num1 = 15
+                    const gcff0000Num2 = gcff0000Num1 * 3
+                    const gcff0000Num3 = gcff0000Num1 * 4
+                    const gcff0000Num4 = gcff0000Num1 * 5
+                    const gcff0000Num5 = gcff0000Num1 * 7
+                    const gcff0000Num6 = gcff0000Num1 * 8
+                    buttons.push(createButton(
+                        modalX - gcff0000Num6, modalY - gcff0000Num4, 'iff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('igcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff0000Num3, modalY - gcff0000Num4, 'iiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('iigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gcff0000Num4, 'iiiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('iiigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num3, modalY - gcff0000Num4, 'ivff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('ivgcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num6, modalY - gcff0000Num4, 'vff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('vgcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - 120, modalY - gcff0000Num1, 'viff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('vigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff0000Num3, modalY - gcff0000Num1, 'viiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('viigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX, modalY - gcff0000Num1, 'viiiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('viiigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num3, modalY - gcff0000Num1, 'ixff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('ixgcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num6, modalY - gcff0000Num1, 'xff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('xgcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff0000Num4, modalY + gcff0000Num2, 'xiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('xigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num4, modalY + gcff0000Num2, 'xiiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('xiigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX - gcff0000Num4, modalY + gcff0000Num5, 'xiiiff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('xiiigcff0000 clicked')
+                    ));
+                    buttons.push(createButton(
+                        modalX + gcff0000Num4, modalY + gcff0000Num5, 'xivff0000', gcff0000Pointerover, gcff0000Pointerout,
+                        () => console.log('xivgcff0000 clicked')
+                    ));
+                }
+                class Element {
+                    constructor(scene, x, y, imgKey, imgName, num, numY) {
+                        this.scene = scene;
+                        this.x = x;
+                        this.y = y;
+                        this.imgKey = imgKey;
+                        this.imgName = imgName;
+                        this.num = num;
+                        this.numY = numY;
+                        this.createInteractiveImage();
+                    }
+                    formatNumber(num) {
+                        let displayNum = num;
+                        const length = num.length;
+                        const suffixes = ['M', 'B', 'T', 'Q'];
+                        for (let i = 6; i <= 18; i += 3) {
+                            if (length === i + 1) {
+                                displayNum = `${num[0]}.${num.substr(1, 2)}${suffixes[(i - 6) / 3]}`;
+                                break;
+                            }
+                            if (length === i + 2) {
+                                displayNum = `${num.substr(0, 2)}.${num.substr(2, 1)}${suffixes[(i - 6) / 3]}`;
+                                break;
+                            }
+                            if (length === i + 3) {
+                                displayNum = `${num.substr(0, 3)}${suffixes[(i - 6) / 3]}`;
+                                break;
+                            }
+                        }
+                        return displayNum;
+                    }
+                    createInteractiveImage() {
+                        const { scene, x, y, imgKey, imgName, num, numY } = this;
+                        const image = scene.add.image(x, y, imgKey);
+                        image.setInteractive();
+                        image.on('pointerover', () => { image.setScale(1.2); });
+                        image.on('pointerout', () => { image.setScale(1); });
+                        image.on('pointerdown', () => {
+                            const content = [
+                                { text: '', spacing: 30 },
+                                { text: imgName, spacing: 0 }
+                            ];
+                            showModalWindow(scene, content, '30px', null, 'modalWindow7fc97f');
+                        });
+                        const displayNum = this.formatNumber(num);
+                        const text = scene.add.text(x, numY, displayNum, {
+                            font: `${MAX_FONT_SIZE}px Arial`, fill: 'black', align: 'center', wordWrap: { width: BOX_WIDTH }
+                        });
+                        text.setOrigin(0.5, 0);
+                        this.text = text;
+                        const numsHeight = text.height;
+                        let numsWidth = text.width;
+                        let numsFontSize = MAX_FONT_SIZE;
+                        while ((numsWidth > BOX_WIDTH || numsHeight > BOX_HEIGHT) > BOX_WIDTH && fontSize > 1) {
+                            numsFontSize--; text.setFontSize(numsFontSize); numsWidth = text.width;
+                        }
+                        const box = scene.add.rectangle(x, numY + numsHeight / 2, numsWidth, BOX_HEIGHT, 0xffffff);
+                        text.setFill('#000000').setDepth(2);
+                    }
+                    setNum(newNum) {
+                        this.num = newNum;
+                        const displayNum = this.formatNumber(this.num);
+                        this.text.setText(displayNum);
+                    }
+                }
+                const BOX_WIDTH = 40;
+                const BOX_HEIGHT = 18;
+                const MAX_FONT_SIZE = 19;
+                let numCYL = 999999;
+                setInterval(() => {
+                    numCYL -= 1;
+                    cylElement.setNum(numCYL);
+                }, 60000);
+                const cylElement = new Element(this, 40, 470, 'CYL', 'Cylanobium', numCYL, 485);
+                new Element(this, 120, 470, 'CYS', 'Cysteon', '1000000', 485);
+                new Element(this, 200, 470, 'PHM', 'Phemmulion', '10000000', 485);
+                new Element(this, 280, 470, 'VTR', 'Vittruim', '100000000', 485);
+                new Element(this, 40, 530, 'GLP', 'Glyptal', '10000000000', 545);
+                new Element(this, 120, 530, 'MON', 'Mondrium', '100000000000', 545);
+                new Element(this, 200, 530, 'LLU', 'Lluoyium', '10000000000000', 545);
+                new Element(this, 280, 530, 'TRU', 'Truiomium', '1000000000000000', 545);
+                const showAlienBanner = () => {
+                    const chance = Math.random();
+                    if (chance < 0.01) {
+                        const newAlienType = generateAlienType();
+                        const textStyle = {
+                            fontSize: '30px', fill: '#000000',
+                            padding: { left: 10, right: 10, top: 3, bottom: 3 }
+                        };
+                        const background = this.add.graphics();
+                        background.fillStyle(0xFFFF00, 1);
+                        const cautionText = this.add.text(10, 10, "CAUTION!!!", textStyle);
+                        const alienNameText = this.add.text(10, cautionText.y + cautionText.height, newAlienType, textStyle);
+                        const maxAlienNameWidth = 300;
+                        while (alienNameText.width > maxAlienNameWidth) {
+                            const currentFontSize = parseInt(alienNameText.style.fontSize, 10);
+                            const reducedFontSize = currentFontSize - 1;
+                            alienNameText.setStyle({ fontSize: `${reducedFontSize}px` });
+                        }
+                        const approachText = this.add.text(10, alienNameText.y + alienNameText.height, "ARE APPROACHING", textStyle);
+                        const backgroundWidth = Math.max(cautionText.width, alienNameText.width, approachText.width) + 20;
+                        const backgroundHeight = cautionText.height + alienNameText.height + approachText.height + 6;
+                        background.fillRect(10 - textStyle.padding.left, 10 - textStyle.padding.top, backgroundWidth, backgroundHeight);
+                        alienNameText.setInteractive();
+                        alienNameText.on('pointerover', () => { alienNameText.setStyle({ fontSize: '32px' }); });
+                        alienNameText.on('pointerout', () => { alienNameText.setStyle({ fontSize: '30px' }); });
+                        const buttonX = this.add.image(300, 15, 'buttonX').setDepth(2).setScale(0.7);
+                        buttonX.setInteractive();
+                        buttonX.on('pointerover', () => { buttonX.setScale(0.8); });
+                        buttonX.on('pointerout', () => { buttonX.setScale(0.7); });
+                        buttonX.on('pointerdown', function () {
+                            cautionText.destroy();
+                            alienNameText.destroy();
+                            approachText.destroy();
+                            buttonX.destroy();
+                            background.destroy();
+                        });
+                        buttonX.setOrigin(1, 0);
+                    }
+                };
+                const scheduleAlienBanner = () => {
+                    this.time.delayedCall(60 * 1000, () => {
+                        showAlienBanner();
+                        scheduleAlienBanner();
+                    });
+                };
+                scheduleAlienBanner();
+                const ShowBlackHoleBanner = () => {
+                    const chance = Math.random();
+                    if (chance < 0.005) {
+                        const blackHoleBanner = this.add.text(10, 10, "DANGER!!! YOU\nARE BEING SUCKED\nINTO A BLACK HOLE", {
+                            fontSize: 27.3 + 'px', fill: '#000000', backgroundColor: '#FFFF00',
+                            padding: { left: 10, right: 10, top: 3, bottom: 3 },
+                        });
+                        const buttonX = this.add.image(300, 15, 'buttonX').setDepth(2).setScale(0.7);
+                        buttonX.setInteractive();
+                        buttonX.setDepth(3);
+                        buttonX.on('pointerover', () => { buttonX.setScale(0.8); });
+                        buttonX.on('pointerout', () => { buttonX.setScale(0.7); });
+                        buttonX.on('pointerdown', function () { blackHoleBanner.destroy(); buttonX.destroy(); });
+                        buttonX.setOrigin(1, 0);
+                    }
+                };
+                const scheduleBlackHoleBanner = () => {
+                    this.time.delayedCall(60 * 1000, () => {
+                        ShowBlackHoleBanner();
+                        scheduleBlackHoleBanner();
+                    });
+                };
+                scheduleBlackHoleBanner();
+                const ShowFuelTankBanner = true; // change this condition to control whether to show the banner or not
+                if (ShowFuelTankBanner) {
+                    const fuelTankBanner = this.add.text(10, 10, "WARNING!!!\nLOW CYLANOBIUM -\nRISK OF EXPLOSION", {
+                        fontSize: 27.3 + 'px', fill: '#000000', backgroundColor: '#FFFF00',
+                        padding: { left: 10, right: 10, top: 3, bottom: 3 },
+                    });
+                    const buttonX = this.add.image(300, 15, 'buttonX').setDepth(2).setScale(0.7);
+                    buttonX.setInteractive();
+                    buttonX.on('pointerover', () => { buttonX.setScale(0.8); });
+                    buttonX.on('pointerout', () => { buttonX.setScale(0.7); });
+                    buttonX.on('pointerdown', function () { fuelTankBanner.destroy(); buttonX.destroy(); });
+                    buttonX.setOrigin(1, 0);
+                }
+            }
+            function update() {
+                if (alienBanner && alienBanner.width > 308) {
+                    const fontSize = alienBanner.fontSize - 1;
+                    alienBanner.setFontSize(fontSize);
+                }
+            }
+        </script>
+    </body>
+</html>
